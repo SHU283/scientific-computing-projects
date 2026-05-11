@@ -1,0 +1,21 @@
+Header Overview
+===============
+
+This directory contains the public interfaces for the finite-volume Euler solver.
+
+Numerical solvers:
+- `godunov_solver.h`, `godunov_solver_2d.h`: first-order finite-volume baselines.
+- `muscl_solver.h`, `muscl_solver_2d.h`: second-order limited reconstruction.
+- `weno2_solver.h`, `weno2_solver_2d.h`: Report 1 WENO-2 solvers.
+- `weno3_solver.h`, `ader3_solver.h`: experimental higher-order 1D extensions.
+
+Core data structures and utilities:
+- `euler1d.h`, `euler2d.h`: conservative/primitive variables, fluxes, grid helpers.
+- `config.h`: command-line runtime configuration.
+- `solver_factory.h`: 1D method dispatch.
+
+Problems, analysis, and output:
+- `problems.h`, `problems2d.h`: benchmark initial and exact solutions.
+- `analysis.h`, `analysis2d.h`: error norms and convergence summaries.
+- `csv_writer.h`, `csv_writer2d.h`: CSV export for Python post-processing.
+- `cuda_backend.h`: CUDA backend entry points and runtime checks.

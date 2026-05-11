@@ -1,0 +1,18 @@
+[MPI] size = 2
+[MPI] local_ny example (rank0) = 197
+[MPI CHECK] step=200 t=2.04421e-05 dt=8.63086e-08 ok=1
+[MPI CHECK] step=400 t=3.72272e-05 dt=8.33284e-08 ok=1
+[MPI CHECK] step=600 t=5.40343e-05 dt=8.49555e-08 ok=1
+[MPI CHECK] step=800 t=7.12137e-05 dt=8.65981e-08 ok=1
+[MPI CHECK] step=1000 t=8.86219e-05 dt=8.76245e-08 ok=1
+[MPI CHECK] step=1200 t=0.000105821 dt=8.45628e-08 ok=1
+[MPI CHECK] step=1400 t=0.000122678 dt=8.42227e-08 ok=1
+[MPI CHECK] step=1600 t=0.000139537 dt=8.43563e-08 ok=1
+[MPI CHECK] step=1800 t=0.000156367 dt=8.39239e-08 ok=1
+[MPI CHECK] step=2000 t=0.00017311 dt=8.32239e-08 ok=1
+[MPI CHECK] step=2200 t=0.000189702 dt=8.28499e-08 ok=1
+Done. steps=2325 final t=0.0002
+[TIMER MPI] dt   total = 8.87544 s
+[TIMER MPI] adv  total = 230.154 s
+[TIMER MPI] steps = 2325
+[TIMER MPI] per-step adv = 0.0989908 s

@@ -1,0 +1,12 @@
+build/
+build-cuda/
+data/
+.mplconfig/
+__pycache__/
+*.pyc
+*.o
+*.exe
+CMakeFiles/
+CMakeCache.txt
+Makefile
+_verify*/
