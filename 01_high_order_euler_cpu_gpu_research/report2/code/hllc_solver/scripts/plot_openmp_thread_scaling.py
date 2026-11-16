@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import csv
+import shutil
+from collections import defaultdict
+from pathlib import Path
+
+
+def load_rows(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("csv_path", type=Path)
+    parser.add_argument("--metric", default="best_seconds", choices=["best_seconds", "mean_seconds", "median_seconds"])
+    parser.add_argument("--dpi", type=int, default=260)
+    parser.add_argument("--figsize", type=float, nargs=2, metavar=("W", "H"), default=(12.4, 5.0))
+    args = parser.parse_args()
+
+    if not args.csv_path.exists():
+        raise SystemExit(f"file not found: {args.csv_path}")
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        from matplotlib.ticker import FuncFormatter
+    except ImportError:
+        raise SystemExit("matplotlib is required. Try: pip install matplotlib")
+
+    rows = load_rows(args.csv_path)
+    if not rows:
+        raise SystemExit("thread-scaling csv is empty")
+
+    by_method: dict[str, list[tuple[int, float]]] = defaultdict(list)
+    for row in rows:
+        by_method[row["method"]].append((int(row["threads"]), float(row[args.metric])))
+
+    for method in by_method:
+        by_method[method].sort(key=lambda item: item[0])
+
+    colors = {
+        "muscl": "#1f4e79",
+        "weno2": "#d97706",
+        "weno3": "#14827a",
+        "ader3": "#7c3aed",
+    }
+    markers = {"muscl": "s", "weno2": "^", "weno3": "o", "ader3": "D"}
+    labels = {
+        "muscl": "MUSCL",
+        "weno2": "WENO-2",
+        "weno3": "WENO-3",
+        "ader3": "ADER-3",
+    }
+
+    fig, axes = plt.subplots(1, 2, figsize=args.figsize, dpi=args.dpi)
+    runtime_ax, speedup_ax = axes
+
+    observed_speedups: list[float] = []
+    for method, points in sorted(by_method.items()):
+        xs = [threads for threads, _ in points]
+        ys = [value for _, value in points]
+        runtime_ax.plot(
+            xs,
+            ys,
+            marker=markers.get(method, "o"),
+            color=colors.get(method, "#444444"),
+            linewidth=2.4,
+            markersize=7,
+            label=labels.get(method, method),
+        )
+
+        one_thread = dict(points).get(1)
+        if one_thread is not None:
+            speedups = [one_thread / value for value in ys]
+            observed_speedups.extend(speedups)
+            speedup_ax.plot(
+                xs,
+                speedups,
+                marker=markers.get(method, "o"),
+                color=colors.get(method, "#444444"),
+                linewidth=2.4,
+                markersize=7,
+                label=labels.get(method, method),
+            )
+
+    max_thread = max(int(row["threads"]) for row in rows)
+    ideal_x = sorted({int(row["threads"]) for row in rows})
+    speedup_ax.plot(ideal_x, ideal_x, color="#777777", linestyle="--", linewidth=1.4, label="ideal")
+
+    runtime_ax.set_title("OpenMP Runtime", fontsize=18, pad=11)
+    runtime_ax.set_xlabel("OpenMP threads", fontsize=16)
+    runtime_ax.set_ylabel(f"{args.metric.replace('_', ' ')} (s)", fontsize=16)
+    runtime_ax.set_xscale("log", base=2)
+    runtime_ax.set_xticks(ideal_x)
+    runtime_ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f"{int(x):d}" if x >= 1 else ""))
+    runtime_ax.grid(True, alpha=0.25)
+    runtime_ax.tick_params(axis="both", labelsize=15)
+    runtime_ax.legend(frameon=True, fontsize=15)
+
+    speedup_ax.set_title("OpenMP Speedup", fontsize=18, pad=11)
+    speedup_ax.set_xlabel("OpenMP threads", fontsize=16)
+    speedup_ax.set_ylabel("speedup vs 1 thread", fontsize=16)
+    speedup_ax.set_xscale("log", base=2)
+    speedup_ax.set_xticks(ideal_x)
+    speedup_ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f"{int(x):d}" if x >= 1 else ""))
+    speedup_ax.set_xlim(0.9, max_thread * 1.15)
+    if observed_speedups:
+        speedup_ax.set_ylim(0.8, max(observed_speedups) * 1.35)
+    speedup_ax.grid(True, alpha=0.25)
+    speedup_ax.tick_params(axis="both", labelsize=15)
+    speedup_ax.legend(frameon=True, fontsize=15)
+
+    nx_values = sorted({int(row["nx"]) for row in rows})
+    ny_values = sorted({int(row["ny"]) for row in rows})
+    fig.suptitle(
+        f"OpenMP Thread Scaling on 2D Gaussian Advection ({nx_values[0]} x {ny_values[0]})",
+        fontsize=21,
+    )
+    fig.tight_layout(rect=(0, 0, 1, 0.92), w_pad=2.0)
+
+    out = args.csv_path.with_suffix(f".{args.metric}.png")
+    fig.savefig(out, bbox_inches="tight")
+    print(f"saved plot: {out}")
+    compact_out = args.csv_path.with_suffix(".compact.png")
+    shutil.copyfile(out, compact_out)
+    print(f"saved compact plot: {compact_out}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

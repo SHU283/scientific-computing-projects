@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""
+Run a compact WENO-3 sensitivity study on 1D smooth problems.
+
+The goal is to compare how convergence behaves for different CFL values on:
+- gaussian_advection
+- smooth_advection
+
+Outputs:
+- solver-generated convergence CSVs in results/stageA
+- a compact summary CSV in results/stageA
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import subprocess
+from pathlib import Path
+
+
+PROBLEMS = ["gaussian_advection", "smooth_advection"]
+
+
+def parse_last_observed_order(csv_path: Path) -> tuple[float | None, float | None, float | None]:
+    with csv_path.open("r", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    if len(rows) < 2:
+        return None, None, None
+
+    last = rows[-1]
+
+    def maybe_float(key: str) -> float | None:
+        value = last.get(key, "")
+        if value in ("", "-", None):
+            return None
+        return float(value)
+
+    return (
+        maybe_float("order_l1"),
+        maybe_float("order_l2"),
+        maybe_float("order_linf"),
+    )
+
+
+def parse_finest_error(csv_path: Path) -> tuple[float, float, float]:
+    with csv_path.open("r", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    if not rows:
+        raise RuntimeError(f"empty convergence csv: {csv_path}")
+
+    last = rows[-1]
+    return float(last["l1_rho"]), float(last["l2_rho"]), float(last["linf_rho"])
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--cfls", nargs="+", type=float, default=[0.4, 0.2, 0.1])
+    parser.add_argument("--output", default="results/stageA/weno3_sensitivity_1d.csv")
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parent.parent
+    output_path = root / args.output
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    rows: list[dict[str, str | float]] = []
+
+    for problem in PROBLEMS:
+        for cfl in args.cfls:
+            cmd = [
+                "./build/final_project",
+                "--study=convergence",
+                f"--problem={problem}",
+                "--method=weno3",
+                f"--cfl={cfl}",
+            ]
+
+            print(f"\n[weno3-sensitivity] problem={problem} cfl={cfl}")
+            subprocess.run(cmd, cwd=root, check=True)
+
+            convergence_csv = root / "results" / "stageA" / f"{problem}_1d_weno3_convergence.csv"
+            l1, l2, linf = parse_finest_error(convergence_csv)
+            order_l1, order_l2, order_linf = parse_last_observed_order(convergence_csv)
+
+            rows.append(
+                {
+                    "problem": problem,
+                    "method": "weno3",
+                    "cfl": cfl,
+                    "finest_l1": l1,
+                    "finest_l2": l2,
+                    "finest_linf": linf,
+                    "last_order_l1": "" if order_l1 is None else order_l1,
+                    "last_order_l2": "" if order_l2 is None else order_l2,
+                    "last_order_linf": "" if order_linf is None else order_linf,
+                }
+            )
+
+    with output_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "problem",
+                "method",
+                "cfl",
+                "finest_l1",
+                "finest_l2",
+                "finest_linf",
+                "last_order_l1",
+                "last_order_l2",
+                "last_order_linf",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"\nsaved WENO-3 sensitivity csv: {output_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
