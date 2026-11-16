@@ -1,0 +1,13 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+ Report 1 supplies the Euler finite-volume formulation, boundary treatment, test problems, and serial/OpenMP/CUDA framework used here. Report 2 does not repeat that derivation. It compares one accepted second-order reference, WENO-2, with two new third-order routes: WENO-3 with SSPRK3 time integration and one-step ADER-3. All official Report 2 calculations use HLLC, which restores the contact wave omitted by the earlier two-wave HLL flux \cite{harten1983,toro1994,toro2009}.
+
+The central question is whether the error reduction from WENO-3 or ADER-3 compensates for extra reconstruction, prediction, and memory traffic. The evidence is organised as follows:
+\begin{enumerate}[label=\textbf{Stage \Alph*:},leftmargin=2.4cm]
+    \item establish the designed convergence order on problems with exact smooth solutions.
+    \item verify that serial, OpenMP, and CUDA implementations produce the same resolved flow.
+    \item measure runtime, speedup, and accuracy--runtime trade-offs.
+    \item compare robustness and resolved structure in discontinuous flows.
+\end{enumerate}
+The first two stages establish numerical correctness before performance is interpreted. The later analysis then asks which backend recovers the added cost of third-order reconstruction or prediction, and whether that cost buys a useful reduction in error. Keeping these questions separate prevents a fast but inconsistent backend, or a sharp but unstable discontinuous result, from being treated as a successful method.

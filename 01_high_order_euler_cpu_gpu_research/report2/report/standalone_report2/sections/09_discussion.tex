@@ -1,0 +1,107 @@
+\chapter{Integrated discussion}
+\label{chap:discussion}
+
+The experiments separate three questions that are often conflated in method comparisons:
+whether the designed order is recovered, whether different implementations solve the same
+discrete problem, and whether the resulting accuracy is obtained at a useful cost.  The
+combined evidence now permits a direct answer.  Higher order is valuable in this code, but
+only when the reconstruction or predictor is paired with hardware that can amortise its
+additional work.  Among the tested combinations, WENO-3 with HLLC on CUDA gives the most
+consistent balance of accuracy, robustness, and runtime.
+
+\section{When does higher order justify its cost?}
+
+On smooth advection, WENO-3 and ADER-3 recover third order while WENO-2 recovers second
+order.  This formal distinction remains visible in the practical \(600^2\) experiment:
+WENO-3 and ADER-3 reduce \(L_1(\rho)\) by factors of 27.2 and 28.0 relative to WENO-2.
+The two third-order errors are almost identical, so runtime decides between them.  On CUDA,
+WENO-3 costs 2.71 s compared with 2.08 s for WENO-2, whereas ADER-3 costs 10.51 s.
+WENO-3 therefore purchases most of the available smooth-case accuracy improvement for a
+small additional GPU cost.  ADER-3 verifies that the one-step construction is accurate and
+highly parallel, but its present predictor does not improve the error enough to recover its
+larger absolute cost.
+
+The discontinuous evidence changes the criterion.  Formal order is no longer achieved at
+shocks, so contact resolution, positivity, and local oscillation become more important
+than the smooth convergence slope.  WENO-3 again gives the strongest compromise: it is
+less diffusive than WENO-2 around narrow structures, remains close to WENO-2 in the
+far-field states, and costs substantially less than ADER-3.  The ADER-3 fallback prevents
+catastrophic failure and preserves positive states, but the predictor/fallback transition
+introduces the largest local backend sensitivity and does not give a uniformly cleaner
+field.  Thus the main advantage of ADER-3 in the current code is its demonstration of a
+robust, one-step third-order route rather than superiority on every test.
+
+\section{What changes when HLL is replaced by HLLC?}
+
+HLLC is the authoritative flux because the tested Euler problems contain material contacts
+that are absent from the two-wave HLL model.  The matched comparison in
+Figure~\ref{fig:hll-hllc-n600-tradeoff} also shows that this decision is supported by the
+computed data rather than by theory alone.  At \(600^2\), changing from HLL to HLLC alters
+the WENO-2 density error by less than 1\%, but lowers the WENO-3 and ADER-3 errors by about
+66\%.  A more accurate reconstruction can therefore expose the benefit of the contact wave
+more clearly than the second-order reference.
+
+The runtime comparison is deliberately interpreted as implementation evidence.  HLLC is
+not algebraically cheaper than HLL, yet the stored WENO HLLC paths are faster because the
+complete kernels differ in branching, memory traffic, and compiler output.  ADER-3, for
+which the predictor dominates the flux cost, changes by only 4.8\% on CUDA.  The defensible
+conclusion is consequently that HLLC improves the measured accuracy and is not prohibitively
+expensive in this implementation. It is not that HLLC must always run faster than HLL.
+
+\section{Suitability of each backend}
+
+Serial execution remains essential as the transparent reference implementation, but its
+cost rises rapidly for the third-order methods.  OpenMP is most useful in an intermediate
+regime.  It avoids CUDA's fixed launch and device-management costs on small grids and gives
+useful speedup on a shared-memory CPU, but its efficiency eventually flattens.  The phase
+profile explains why: once the stencil loops are parallel, workspace allocation, reductions,
+updates, barriers, and memory bandwidth occupy a larger fraction of the run.  At 16 threads
+and \(100^2\), the measured efficiencies are 26.3\%, 33.3\%, and 89.4\% for WENO-2,
+WENO-3, and ADER-3.  The compute-heavy ADER predictor supplies enough work to use the
+threads effectively, whereas the lighter WENO loops encounter overhead sooner.
+
+CUDA is the appropriate backend for large grids and for the two third-order methods.  At
+\(600^2\), smooth speedups reach 38.43 for WENO-2, 83.84 for WENO-3, and 392.01 for
+ADER-3.  Phase profiling attributes this gain to the spatial operator: its CUDA speedup is
+about 204 for both WENO methods and 1049 for ADER-3.  Acceleration therefore shifts the
+bottleneck rather than removing it.  CFL reduction and state update become visible once the
+dominant stencil or predictor work has been shortened.  Future optimization should target
+those residual phases and reduce synchronization, rather than only tuning an already fast
+flux kernel.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{p{0.25\textwidth}p{0.26\textwidth}p{0.40\textwidth}}
+\toprule
+Objective & Recommended route & Reason \tabularnewline
+\midrule
+Low-cost reference or modest accuracy & WENO-2 on serial/OpenMP & Lowest method cost, useful before CUDA overhead is amortised. \tabularnewline
+High smooth accuracy & WENO-3/HLLC on CUDA & Near-third-order error at a runtime close to CUDA WENO-2. \tabularnewline
+Contact-rich discontinuous flow & WENO-3/HLLC on CUDA & Better local resolution than WENO-2 without ADER-3's present cost and sensor sensitivity. \tabularnewline
+One-step high-order research route & ADER-3/HLLC on CUDA & Correct smooth order and very large parallel speedup, but further predictor/fallback optimization is required. \tabularnewline
+\bottomrule
+\end{tabular}
+\caption{Recommended method/backend combinations within the tested problem range.}
+\label{tab:recommendations}
+\end{table}
+
+\section{Limits of the evidence}
+
+The conclusions are bounded by the experiment design.  The Gaussian problem supplies an
+exact error measure, but the two-dimensional discontinuous cases do not. Their assessment
+therefore combines positivity, backend agreement, field structure, and one-dimensional
+slices.  Timings are best repeated values on a shared node and are intended to suppress
+transient interference, not to reproduce an exclusively reserved machine.  The phase
+profiler inserts CUDA synchronizations to assign kernel time and is diagnostic rather than
+the source of the headline runtimes.
+
+The official large-grid study ends at \(5000^2\).  It shows continued accuracy reduction
+and increasing CUDA cost, but no single sharp saturation point that can be defended from
+runtime slope alone.  Larger exploratory points were more sensitive to memory pressure and
+shared-machine variability and were therefore not promoted into the canonical results.
+Finally, the ADER-3 troubled-interface decision is intentionally nonlinear.  Small backend
+roundoff can change a branch near its threshold, so a localized difference larger than
+roundoff is possible even when both solutions remain conservative, positive, and physically
+equivalent at the resolved scale.

@@ -1,0 +1,242 @@
+\chapter{Methodology}
+\label{chap:methodology}
+
+\section{Inherited finite-volume framework}
+
+The conserved state remains \(\mathbf U=(\rho,\rho u,\rho v,E)^T\), with the ideal-gas closure and cell-average finite-volume update defined in Report 1. Report 2 changes the interface flux, reconstruction, and temporal discretisation, but not the conservation law or data layout. In two dimensions the common spatial operator is
+\begin{equation}
+\mathcal L(\overline{\mathbf U}_{ij})=
+-\frac{\widehat{\mathbf F}_{i+1/2,j}-\widehat{\mathbf F}_{i-1/2,j}}{\Delta x}
+-\frac{\widehat{\mathbf G}_{i,j+1/2}-\widehat{\mathbf G}_{i,j-1/2}}{\Delta y}.
+\label{eq:fvoperator}
+\end{equation}
+Here \(\overline{\mathbf U}_{ij}\) is the cell average in cell \((i,j)\),
+\(\mathcal L\) is the semi-discrete finite-volume spatial operator,
+\(\widehat{\mathbf F}\) and \(\widehat{\mathbf G}\) are numerical face fluxes in
+the \(x\)- and \(y\)-directions, and \(\Delta x,\Delta y\) are the grid
+spacings.
+Reconstruction is performed separately along rows and columns, but both flux divergences enter the same update. No Strang time splitting is used.
+
+\section{HLLC interface flux}
+\label{sec:hllc}
+
+For left and right primitive states \(\mathbf W_K=(\rho_K,u_K,v_K,p_K)\) at an \(x\)-normal face, the standard HLLC construction \cite{toro1994,toro2009} estimates the outer waves as
+\begin{equation}
+S_L=\min(u_L-c_L,u_R-c_R),\qquad
+S_R=\max(u_L+c_L,u_R+c_R),
+\end{equation}
+and the contact speed is
+\begin{equation}
+S_M=
+\frac{p_R-p_L+\rho_Lu_L(S_L-u_L)-\rho_Ru_R(S_R-u_R)}
+{\rho_L(S_L-u_L)-\rho_R(S_R-u_R)}.
+\label{eq:hllccontact}
+\end{equation}
+The subscript \(K\in\{L,R\}\) denotes the state on either side of the face,
+\(c_K\) is its sound speed, \(S_L\) and \(S_R\) estimate the two outer wave
+speeds, and \(S_M\) is the contact-wave speed between them.
+The star-state density and energy are
+\begin{equation}
+\rho_K^*=\rho_K\frac{S_K-u_K}{S_K-S_M},\qquad
+E_K^*=\rho_K^*\left[\frac{E_K}{\rho_K}+(S_M-u_K)
+\left(S_M+\frac{p_K}{\rho_K(S_K-u_K)}\right)\right].
+\end{equation}
+The corresponding star pressure and conservative state are
+\begin{equation}
+p^*=p_K+\rho_K(S_K-u_K)(S_M-u_K),\qquad
+\mathbf U_K^*=\left(\rho_K^*,\rho_K^*S_M,
+\rho_K^*v_K,E_K^*\right)^T.
+\label{eq:hllcstar}
+\end{equation}
+The superscript \(^*\) identifies a quantity in the left or right HLLC
+star region, rather than in the original reconstructed state.
+Thus the normal momentum is set by the contact speed, while the tangential velocity is preserved. Equations~\eqref{eq:hllccontact}--\eqref{eq:hllcstar} enforce the Rankine--Hugoniot jump relation across each outer wave and retain the linearly degenerate contact wave. This is the main distinction from the two-wave HLL flux used as the historical comparison: HLL averages over the contact-containing star region, whereas HLLC divides it into left and right star states. The flux is selected from
+\begin{equation}
+\widehat{\mathbf F}_{\mathrm{HLLC}}=
+\begin{cases}
+\mathbf F_L, & 0\le S_L,\\
+\mathbf F_L+S_L(\mathbf U_L^*-\mathbf U_L), & S_L\le0\le S_M,\\
+\mathbf F_R+S_R(\mathbf U_R^*-\mathbf U_R), & S_M\le0\le S_R,\\
+\mathbf F_R, & S_R\le0.
+\end{cases}
+\label{eq:hllcflux}
+\end{equation}
+The \(y\)-normal form exchanges \(u\) and \(v\). A local Rusanov flux is used only when the denominator in Equation~\eqref{eq:hllccontact} is below \(10^{-14}\). This protects a degenerate interface and is not the normal flux path.
+
+\section{WENO-3 with SSPRK3}
+
+WENO-2 is retained unchanged as the second-order reference. Following the classical WENO construction based on candidate stencils and nonlinear smoothness weights \cite{jiang1996}, WENO-3 reconstructs a left interface value from
+\begin{equation}
+q_0=-\tfrac12U_{i-1}+\tfrac32U_i,\qquad
+q_1=\tfrac12U_i+\tfrac12U_{i+1},
+\end{equation}
+where \(q_0\) and \(q_1\) are the two candidate interface values.
+The quantities \(\beta_0=(U_i-U_{i-1})^2\) and
+\(\beta_1=(U_{i+1}-U_i)^2\) measure the smoothness of their stencils, while
+\(\tau=|\beta_0-\beta_1|\) is the WENO-Z global smoothness measure. WENO-Z
+weights use
+\begin{equation}
+\alpha_k=d_k\left[1+\left(\frac{\tau}{\varepsilon+\beta_k}\right)^2\right],
+\qquad (d_0,d_1)=(1/3,2/3),\quad \varepsilon=10^{-6},
+\end{equation}
+where \(d_k\) is the optimal linear weight, \(\alpha_k\) is its unnormalised
+nonlinear counterpart, and \(\varepsilon\) prevents division by zero.
+Normalising the \(\alpha_k\) values gives \(\omega_k\), followed by the
+mapped-weight correction \cite{henrick2005,borges2008}. The mapping used in
+the implementation is
+\begin{equation}
+g_k(\omega)=
+\frac{\omega\left(d_k+d_k^2-3d_k\omega+\omega^2\right)}
+{d_k^2+\omega(1-2d_k)},
+\qquad
+\widetilde\omega_k=\frac{g_k(\omega_k)}{\sum_j g_j(\omega_j)}.
+\label{eq:mapped-weno}
+\end{equation}
+Here \(g_k\) is the mapping associated with stencil \(k\), and
+\(\widetilde\omega_k\) is the final normalised weight used to combine the
+candidate values.
+The WENO-Z factor makes \(\omega_k\) approach its linear value in smooth regions, while a large smoothness indicator suppresses a stencil that crosses a discontinuity. Equation~\eqref{eq:mapped-weno} further restores the designed order near smooth critical points. Reconstruction is component-wise in \((\rho,\rho u,\rho v,E)\), with the same scalar operation applied in both coordinate directions. The right state uses the reflected stencil and weights. HLLC fluxes built from these states define \(\mathcal L\), which is advanced by SSPRK3 \cite{gottlieb2001}:
+\begin{align}
+\mathbf U^{(1)}&=\mathbf U^n+\Delta t\mathcal L(\mathbf U^n),\\
+\mathbf U^{(2)}&=\tfrac34\mathbf U^n+\tfrac14[\mathbf U^{(1)}+\Delta t\mathcal L(\mathbf U^{(1)})],\\
+\mathbf U^{n+1}&=\tfrac13\mathbf U^n+\tfrac23[\mathbf U^{(2)}+\Delta t\mathcal L(\mathbf U^{(2)})].
+\end{align}
+The superscript \(n\) denotes the current time level, while \((1)\) and
+\((2)\) label the two intermediate Runge--Kutta stage states.
+
+\section{One-step ADER-3}
+
+ADER-3 replaces Runge--Kutta stages by a local space--time predictor \cite{dumbser2008}. Each cell carries the quadratic polynomial
+\begin{equation}
+\mathbf w_h(\xi,\eta)=\mathbf a_0+\xi\mathbf a_x+\eta\mathbf a_y
++\tfrac12\xi^2\mathbf a_{xx}+\xi\eta\mathbf a_{xy}
++\tfrac12\eta^2\mathbf a_{yy},
+\end{equation}
+where \(\mathbf w_h\) is the reconstructed polynomial and the
+\(\mathbf a\)-coefficients represent its constant, first-derivative, and
+second-derivative terms. The correction
+\(\mathbf a_0=\overline{\mathbf U}_{ij}-(\mathbf a_{xx}+\mathbf a_{yy})/24\)
+preserves its cell average. The predictor
+\begin{equation}
+\mathbf q_h=\mathbf w_h+\tau\,\partial_t\mathbf w_h
++\tfrac12\tau^2\partial_{tt}\mathbf w_h
+\label{eq:aderpredictor}
+\end{equation}
+defines the local space--time polynomial \(\mathbf q_h\). It uses the Euler
+equations to replace time derivatives by spatial flux derivatives. Two-point
+Gauss quadrature in face position and time produces four HLLC evaluations per
+face, averaged into one conservative update.
+
+Here \(\xi,\eta\in[-1/2,1/2]\) are cell-local coordinates and \(\tau\in[0,\Delta t]\) is local time. The correction in \(\mathbf a_0\) is important: without it, the polynomial value at the cell centre would be mistaken for the finite-volume average and the conservative update would acquire a resolution-dependent bias. The predictor evaluates the evolving face states directly over the time step, so ADER-3 needs one flux-divergence update rather than the three complete spatial-operator evaluations used by SSPRK3. Its predictor is more expensive per face, but exposes considerably more arithmetic inside one update.
+
+Near discontinuities, unlimited high-order prediction can form non-admissible states. An interface therefore falls back to first-order cell-average HLLC when the maximum relative jump in density, pressure, or normal velocity exceeds 0.15, or when a predicted state has non-positive density or pressure. A failed full update is retried with \(\Delta t/2\), up to eight reductions. The fallback is local, so smooth cells retain the third-order predictor.
+
+\section{Time-step selection}
+
+All methods use the multidimensional CFL restriction \cite{courant1967}
+\begin{equation}
+\Delta t=\frac{\mathrm{CFL}}
+{\max(|u|+c)/\Delta x+\max(|v|+c)/\Delta y},
+\label{eq:cfl}
+\end{equation}
+where \(c\) is the local sound speed and each maximum is taken over the active
+cells in the corresponding coordinate direction. The resulting
+\(\Delta t\) is the accepted time-step length and is clipped so that the last
+step ends exactly at the requested final time. Smooth runs use CFL 0.4 for WENO-2/WENO-3 and 0.25 for ADER-3. Discontinuous WENO runs use 0.20. The
+common ADER-3 value 0.14 is justified in Section~\ref{sec:cfl-study}.
+
+The CFL number is method-dependent because the SSP Runge--Kutta and ADER updates have different stability limits, and the discontinuous ADER predictor also contains admissibility, fallback, and retry branches. A single CFL imposed on every method would therefore either make one scheme unreliable or force all schemes to use the most restrictive value, adding time steps that the less restrictive methods do not require. The values above were selected by stability and accuracy tests, not by timing alone: for each method and problem class, the largest tested value was retained only when the solution remained finite and positive, achieved the expected smooth-grid accuracy, and gave reproducible backend behaviour. This evaluates each scheme in a practical stable configuration while preserving a strict control within that scheme: serial, OpenMP, and CUDA always use the same CFL, grid, final time, and accepted time-step rule.
+
+\section{Core implementation}
+
+The C++17 code keeps the Report 1 field containers and backend interface. The new numerical work is concentrated in the WENO-3 reconstruction, SSPRK3 update, ADER-3 predictor, and HLLC flux. Serial and OpenMP call the same numerical functions. OpenMP changes loop execution only, following the shared-memory work-sharing model \cite{openmp52}. CUDA keeps the evolving field in device memory and reproduces the same method as kernels under the CUDA execution and memory model \cite{nvidia129}.
+
+Listing~\ref{lst:weno3-core} shows the WENO-3 operation that differs from WENO-2: asymmetric third-order linear weights, WENO-Z nonlinearisation, and mapped weights. The same scalar function is applied to each conserved component in both coordinate directions.
+
+\begin{lstlisting}[caption={Core left-state WENO-3 reconstruction used by the CPU implementation.},label={lst:weno3-core}]
+const double q0 = -0.5 * uim1 + 1.5 * ui;
+const double q1 =  0.5 * ui   + 0.5 * uip1;
+const double beta0 = (ui - uim1) * (ui - uim1);
+const double beta1 = (uip1 - ui) * (uip1 - ui);
+const double tau = std::abs(beta0 - beta1);
+
+double omega0 = nonlinear_weight_z(beta0, tau, 1.0 / 3.0);
+double omega1 = nonlinear_weight_z(beta1, tau, 2.0 / 3.0);
+const double alpha_sum = omega0 + omega1;
+omega0 = mapped_weight(omega0 / alpha_sum, 1.0 / 3.0);
+omega1 = mapped_weight(omega1 / alpha_sum, 2.0 / 3.0);
+return (omega0 * q0 + omega1 * q1) / (omega0 + omega1);
+\end{lstlisting}
+
+Listing~\ref{lst:ader-core} captures the corresponding ADER-3 decision. Smooth admissible interfaces use four predicted space--time states. Troubled or non-admissible interfaces use cell-average HLLC. This branch is central to both robustness and the backend sensitivity examined later.
+
+\begin{lstlisting}[caption={Condensed ADER-3 face-flux and local-fallback logic.},label={lst:ader-core}]
+if (interface_is_troubled(left_average, right_average,
+                          config.gamma, true) ||
+    !polynomial_is_admissible(left_polynomial, config.gamma) ||
+    !polynomial_is_admissible(right_polynomial, config.gamma)) {
+    return hllc_flux_x(left_average, right_average, config.gamma);
+}
+
+Conservative2D flux_average{};
+for (const double eta : face_nodes) {
+    for (const double tau : time_nodes) {
+        const auto left = predict_local_state(
+            left_polynomial, 0.5, eta, tau,
+            cell_dx, cell_dy, config.gamma);
+        const auto right = predict_local_state(
+            right_polynomial, -0.5, eta, tau,
+            cell_dx, cell_dy, config.gamma);
+        if (!is_admissible(left, config.gamma) ||
+            !is_admissible(right, config.gamma))
+            return hllc_flux_x(
+                left_average, right_average, config.gamma);
+        flux_average +=
+            0.25 * hllc_flux_x(left, right, config.gamma);
+    }
+}
+\end{lstlisting}
+
+The submitted source repository contains the complete CPU and CUDA implementations. The excerpts above isolate the new algorithmic choices without repeating the shared storage, boundary, CSV, and command-line infrastructure already described in Report~1.
+
+\section{Validation and backend-test design}
+
+The convergence study uses serial smooth advection because it tests the discretisation rather than parallel execution. Density errors are evaluated against exact finite-volume cell averages using
+\begin{equation}
+L_1=\frac1N\sum|e_{ij}|,\qquad
+L_2=\left(\frac1N\sum e_{ij}^2\right)^{1/2},\qquad
+L_\infty=\max|e_{ij}|,
+\end{equation}
+where \(e_{ij}\) is the numerical-minus-exact cell-average density error and
+\(N\) is the number of cells. The observed order between a coarse and fine
+grid is
+\(p_{\mathrm{obs}}=\log(\mathcal E_c/\mathcal E_f)/
+\log(h_c/h_f)\), where \(\mathcal E_c,\mathcal E_f\) are the selected error
+norms and \(h_c,h_f\) are the corresponding grid spacings.
+
+The backend-consistency study fixes the grid and numerical parameters, then compares every stored primitive and conserved field from serial, 16-thread OpenMP, and CUDA. It includes periodic Gaussian advection, the four-state quadrant Riemann problem, and a planar-shock/low-density-bubble interaction. The completed Lovelace tests use double precision, two Intel Xeon Silver 4314 CPUs, and one NVIDIA A30 compiled with CUDA 12.9. Timing is not used as evidence in the validation or backend-consistency chapters.
+
+Table~\ref{tab:evidence-matrix} separates the roles of the principal experiments. Smooth refinements test formal order. The Sod tube supplies an exact discontinuous reference. The two-dimensional discontinuous fields test contact and shock structure without an exact multidimensional solution. The backend matrix isolates implementation differences at fixed numerical parameters.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.23\textwidth}p{0.24\textwidth}p{0.18\textwidth}p{0.25\textwidth}@{}}
+\toprule
+Purpose & Problem & Resolution & Comparison \\
+\midrule
+Formal order & 1D smooth and Gaussian advection & $50$--$1600$ & Exact cell averages \\
+\addlinespace[0.30em]
+Formal order & 2D Gaussian advection & $25^2$--$1600^2$ & Exact cell averages \\
+\addlinespace[0.30em]
+Discontinuous reference & Sod shock tube, $t=0.2$ & $n=800$ & Exact Riemann solution \\
+\addlinespace[0.30em]
+Resolved 2D structure & Quadrant Riemann and shock--bubble, $t=0.2$ & $600^2$ & Cross-method fields and slices \\
+\addlinespace[0.30em]
+Backend consistency & Gaussian, quadrant and shock--bubble & $100^2$ & OpenMP/CUDA fields against serial \\
+\bottomrule
+\end{tabular}
+\caption{Numerical evidence used before the performance analysis.}
+\label{tab:evidence-matrix}
+\end{table}

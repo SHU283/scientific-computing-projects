@@ -1,0 +1,95 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{figures/}}
+\onehalfspacing
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0.25em}
+% Keep isolated final lines and hyphenated word fragments off the next page.
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\setlength{\textfloatsep}{22pt plus 3pt minus 3pt}
+\setlength{\intextsep}{18pt plus 3pt minus 3pt}
+\setlength{\floatsep}{16pt plus 3pt minus 3pt}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\sisetup{scientific-notation=true,round-mode=places,round-precision=3}
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  rulecolor=\color{black!25},
+  backgroundcolor=\color{black!3},
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.6em,
+  xrightmargin=0.6em
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{Report 2}
+\fancyhead[RE]{Performance of Higher-Order Methods on GPU Hardware}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{1.0cm}
+{\LARGE\bfseries Performance of Higher-Order Methods on GPU Hardware\par}
+\vspace{0.45cm}
+{\Large Report 2\par}
+\vspace{1.6cm}
+\includegraphics[width=0.19\textwidth]{University_Crest.pdf}
+\vfill
+{\Large Shuli Xu\par}
+\vspace{0.5cm}
+{\large Department of Physics\\University of Cambridge\par}
+\vfill
+{\large MPhil in Scientific Computing\par}
+\vspace{1.1cm}
+\begin{flushright}
+\large Supervisor: William Bennett
+\end{flushright}
+\vspace{0.8cm}
+{\large July 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+% \input{sections/01_abstract} % Temporarily hidden; excluded from the body word-count check.
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\input{sections/02_introduction}
+\input{sections/03_numerical_methods}
+\input{sections/05_stage_a_validation}
+\input{sections/06_stage_b_consistency}
+\input{sections/07_accuracy_performance}
+\input{sections/09_discussion}
+\input{sections/10_conclusions}
+\input{sections/07_references}
+
+\end{document}

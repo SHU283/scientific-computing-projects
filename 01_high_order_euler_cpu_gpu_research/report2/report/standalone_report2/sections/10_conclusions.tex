@@ -1,0 +1,50 @@
+\chapter{Conclusions and future work}
+\label{chap:conclusions}
+
+Report~2 asked whether third-order finite-volume methods provide enough additional accuracy
+to justify their cost on serial, OpenMP, and CUDA hardware.  The answer is conditional but
+clear.  Both WENO-3/SSPRK3 and ADER-3 recover third order on smooth one- and two-dimensional
+advection, while WENO-2 provides the expected second-order reference.  HLLC preserves the
+contact wave and, in the matched smooth comparison, reduces the WENO-3 and ADER-3 density
+errors by about two thirds relative to the older HLL route.  Serial, OpenMP, and CUDA fields
+agree to roundoff or to small localized differences associated with nonlinear fallback
+decisions, and every accepted high-resolution discontinuous field retains positive density
+and pressure.
+
+The decisive result is the interaction between method and backend.  On the smooth
+\(600^2\) problem, CUDA WENO-3 achieves \(L_1(\rho)=1.726\times10^{-8}\) in 2.71 s,
+compared with \(4.703\times10^{-7}\) in 2.08 s for WENO-2.  ADER-3 gives a similar error,
+\(1.681\times10^{-8}\), but requires 10.51 s.  WENO-3/HLLC on CUDA is therefore the best
+overall accuracy--efficiency combination tested.  WENO-2 remains the appropriate economical
+baseline, especially for small grids.  ADER-3 is numerically successful and exposes much
+greater parallelism than either WENO route, but the present local predictor and robust
+fallback make it too expensive to be the default choice.
+
+The discontinuous cases reinforce rather than overturn this ranking.  WENO-3 retains
+contacts more sharply than WENO-2 at a manageable CUDA cost.  ADER-3 captures the same wave
+pattern and remains admissible, but its local sensor transitions are more visible and its
+absolute runtime is highest.  Higher formal order is therefore not sufficient by itself:
+the useful method is the one whose robustness mechanism, flux, and hardware implementation
+preserve the accuracy benefit at an acceptable cost.
+
+The phase-resolved measurements identify concrete next steps.  First, OpenMP work arrays
+should be allocated once and reused, and adjacent loops should be fused where this reduces
+barriers and memory traffic.  Second, CUDA CFL reduction, conservative update, and validity
+checks should be fused or reorganised to reduce the residual synchronization exposed after
+the spatial operator is accelerated.  Third, the ADER predictor and troubled-interface
+criterion should be profiled together. A smoother or characteristic-based sensor may reduce
+branch sensitivity without sacrificing positivity.  Characteristic-variable WENO and a
+more selective fallback are also natural numerical extensions.
+
+Further performance work should use reserved or otherwise controlled GPU measurements,
+hardware counters, and a profiler such as Nsight to separate cache, bandwidth, occupancy,
+and allocation effects.  Adaptive mesh refinement would then be a more informative route
+to larger effective resolution than uniform grids beyond \(5000^2\).  A longer project
+could additionally examine multi-GPU decomposition and vary the shock--bubble size to test
+how active-region geometry affects thread occupancy and load balance.
+
+The principal outcome is consequently not a universal winner independent of context.
+It is a tested selection rule: use WENO-2 when low cost is primary, use WENO-3/HLLC on CUDA
+when accuracy and robustness must both be retained, and treat ADER-3 as a promising one-step
+route whose numerical machinery is ready but whose implementation still offers substantial
+scope for optimization.
