@@ -1,0 +1,20 @@
+========== Final Project Solver ==========
+backend    : cuda
+method     : ader3
+problem    : shock_bubble_2d
+boundary   : outflow
+grid       : 100 x 100
+cfl        : 0.13
+final_time : 0.2
+adv_vel    : 0.73
+output     : results/report2_hllc/ader3_discontinuous_cfl_probe/fields/shock_bubble_2d_ader3_cuda_n100_cfl_0.13.csv
+==========================================
+CUDA compiled. Detected device count: 1
+cuda smoke test : passed
+ADER3_DIAGNOSTICS backend=cuda steps=1315 x_troubled_fallbacks=287724 x_predictor_fallbacks=270 y_troubled_fallbacks=155409 y_predictor_fallbacks=226 rejected_steps=13
+cuda 2D ader3 solver : passed
+time steps : 1315
+final time : 0.2
+output csv : results/report2_hllc/ader3_discontinuous_cfl_probe/fields/shock_bubble_2d_ader3_cuda_n100_cfl_0.13.csv
+2D discontinuous CUDA case finished. Please inspect the exported field data.
+CUDA 2D discontinuous solver completed.

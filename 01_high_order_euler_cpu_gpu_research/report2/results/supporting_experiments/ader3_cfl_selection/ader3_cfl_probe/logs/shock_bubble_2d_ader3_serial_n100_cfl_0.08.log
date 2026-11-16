@@ -1,0 +1,18 @@
+========== Final Project Solver ==========
+backend    : serial
+method     : ader3
+problem    : shock_bubble_2d
+boundary   : outflow
+grid       : 100 x 100
+cfl        : 0.08
+final_time : 0.2
+adv_vel    : 0.73
+output     : none
+==========================================
+ADER3_DIAGNOSTICS backend=serial steps=2122 x_troubled_fallbacks=459664 x_predictor_fallbacks=378 y_troubled_fallbacks=245777 y_predictor_fallbacks=408 rejected_steps=7
+
+2D calculation finished.
+time steps : 2122
+final time : 0.2
+output csv : none
+2D discontinuous case finished. Please inspect the exported field data.
