@@ -1,0 +1,38 @@
+Solver interface headers:
+ader3_solver.h
+weno2_solver_2d.h
+weno2_solver.h
+weno3_solver.h
+muscl_solver_2d.h
+muscl_solver.h
+godunov_solver_2d.h
+godunov_solver.h
+
+Not included in this stage:
+weno3_solver_2d.h
+ader3_solver_2d.h
+
+Error-norm analysis and convergence CSV output:
+analysis.h
+analysis2d.h
+
+Runtime configuration:
+config.h
+
+CSV writers for field data:
+csv_writer.h
+csv_writer2d.h
+
+CUDA backend interface:
+cuda_backend.h
+
+Euler-equation data structures, conversions, and flux helpers:
+euler1d.h
+euler2d.h
+
+Problem setup and exact/reference solutions:
+problems.h
+problems2d.h
+
+Solver dispatch:
+solver_factory.h

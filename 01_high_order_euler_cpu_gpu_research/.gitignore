@@ -1,0 +1,17 @@
+# Local build products and caches; submitted result data and logs stay tracked.
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example

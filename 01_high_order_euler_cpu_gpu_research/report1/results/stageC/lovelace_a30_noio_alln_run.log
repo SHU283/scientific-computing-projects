@@ -1,0 +1,497 @@
+
+[report1-2d-runtime-noio] method=godunov backend=serial n=25
+  warmup 1: 0.010043 s
+  warmup 2: 0.008522 s
+  repeat 1: 0.007218 s
+  repeat 2: 0.008131 s
+  repeat 3: 0.007362 s
+  repeat 4: 0.006745 s
+  repeat 5: 0.006552 s
+  repeat 6: 0.006408 s
+  repeat 7: 0.006757 s
+
+[report1-2d-runtime-noio] method=godunov backend=serial n=50
+  warmup 1: 0.018722 s
+  warmup 2: 0.018724 s
+  repeat 1: 0.014025 s
+  repeat 2: 0.013274 s
+  repeat 3: 0.013257 s
+  repeat 4: 0.015379 s
+  repeat 5: 0.013114 s
+  repeat 6: 0.013288 s
+  repeat 7: 0.013583 s
+
+[report1-2d-runtime-noio] method=godunov backend=serial n=100
+  warmup 1: 0.068427 s
+  warmup 2: 0.071144 s
+  repeat 1: 0.067518 s
+  repeat 2: 0.073857 s
+  repeat 3: 0.071891 s
+  repeat 4: 0.067720 s
+  repeat 5: 0.071589 s
+  repeat 6: 0.118038 s
+  repeat 7: 0.069228 s
+
+[report1-2d-runtime-noio] method=godunov backend=serial n=200
+  warmup 1: 0.512181 s
+  warmup 2: 0.510060 s
+  repeat 1: 0.504737 s
+  repeat 2: 0.515887 s
+  repeat 3: 0.513948 s
+  repeat 4: 0.523934 s
+  repeat 5: 0.517274 s
+  repeat 6: 0.508566 s
+  repeat 7: 0.509479 s
+
+[report1-2d-runtime-noio] method=godunov backend=serial n=600
+  warmup 1: 10.835485 s
+  warmup 2: 10.517341 s
+  repeat 1: 10.532826 s
+  repeat 2: 10.453290 s
+  repeat 3: 10.385962 s
+  repeat 4: 10.445048 s
+  repeat 5: 10.788477 s
+  repeat 6: 10.470264 s
+  repeat 7: 10.479947 s
+
+[report1-2d-runtime-noio] method=godunov backend=openmp n=25
+  warmup 1: 0.008391 s
+  warmup 2: 0.004607 s
+  repeat 1: 0.004016 s
+  repeat 2: 0.003682 s
+  repeat 3: 0.006691 s
+  repeat 4: 0.007019 s
+  repeat 5: 0.007661 s
+  repeat 6: 0.006522 s
+  repeat 7: 0.006749 s
+
+[report1-2d-runtime-noio] method=godunov backend=openmp n=50
+  warmup 1: 0.012819 s
+  warmup 2: 0.013273 s
+  repeat 1: 0.013312 s
+  repeat 2: 0.010156 s
+  repeat 3: 0.010192 s
+  repeat 4: 0.009959 s
+  repeat 5: 0.011821 s
+  repeat 6: 0.012928 s
+  repeat 7: 0.012050 s
+
+[report1-2d-runtime-noio] method=godunov backend=openmp n=100
+  warmup 1: 0.028251 s
+  warmup 2: 0.026064 s
+  repeat 1: 0.025930 s
+  repeat 2: 0.025883 s
+  repeat 3: 0.026623 s
+  repeat 4: 0.027296 s
+  repeat 5: 0.026632 s
+  repeat 6: 0.028009 s
+  repeat 7: 0.026424 s
+
+[report1-2d-runtime-noio] method=godunov backend=openmp n=200
+  warmup 1: 0.132655 s
+  warmup 2: 0.134341 s
+  repeat 1: 0.133007 s
+  repeat 2: 0.132575 s
+  repeat 3: 0.125876 s
+  repeat 4: 0.131235 s
+  repeat 5: 0.136421 s
+  repeat 6: 0.128664 s
+  repeat 7: 0.138978 s
+
+[report1-2d-runtime-noio] method=godunov backend=openmp n=600
+  warmup 1: 3.260368 s
+  warmup 2: 3.091544 s
+  repeat 1: 3.115288 s
+  repeat 2: 3.056486 s
+  repeat 3: 3.055095 s
+  repeat 4: 3.111954 s
+  repeat 5: 3.139974 s
+  repeat 6: 3.109051 s
+  repeat 7: 3.099522 s
+
+[report1-2d-runtime-noio] method=godunov backend=cuda n=25
+  warmup 1: 0.367369 s
+  warmup 2: 0.366347 s
+  repeat 1: 0.365891 s
+  repeat 2: 0.362185 s
+  repeat 3: 0.370341 s
+  repeat 4: 0.368032 s
+  repeat 5: 0.362106 s
+  repeat 6: 0.359608 s
+  repeat 7: 0.353125 s
+
+[report1-2d-runtime-noio] method=godunov backend=cuda n=50
+  warmup 1: 0.352083 s
+  warmup 2: 0.353172 s
+  repeat 1: 0.356275 s
+  repeat 2: 0.371212 s
+  repeat 3: 0.363299 s
+  repeat 4: 0.364994 s
+  repeat 5: 0.490686 s
+  repeat 6: 0.391154 s
+  repeat 7: 0.367787 s
+
+[report1-2d-runtime-noio] method=godunov backend=cuda n=100
+  warmup 1: 0.382941 s
+  warmup 2: 0.377471 s
+  repeat 1: 0.372862 s
+  repeat 2: 0.367854 s
+  repeat 3: 0.373090 s
+  repeat 4: 0.378918 s
+  repeat 5: 0.374795 s
+  repeat 6: 0.378975 s
+  repeat 7: 0.366357 s
+
+[report1-2d-runtime-noio] method=godunov backend=cuda n=200
+  warmup 1: 0.435073 s
+  warmup 2: 0.441330 s
+  repeat 1: 0.445507 s
+  repeat 2: 0.446738 s
+  repeat 3: 0.437376 s
+  repeat 4: 0.435149 s
+  repeat 5: 0.441361 s
+  repeat 6: 0.438464 s
+  repeat 7: 0.440617 s
+
+[report1-2d-runtime-noio] method=godunov backend=cuda n=600
+  warmup 1: 2.102983 s
+  warmup 2: 2.106555 s
+  repeat 1: 2.099095 s
+  repeat 2: 2.120964 s
+  repeat 3: 2.330597 s
+  repeat 4: 2.186229 s
+  repeat 5: 2.104269 s
+  repeat 6: 2.088831 s
+  repeat 7: 2.091984 s
+
+[report1-2d-runtime-noio] method=muscl backend=serial n=25
+  warmup 1: 0.010053 s
+  warmup 2: 0.009719 s
+  repeat 1: 0.008139 s
+  repeat 2: 0.008679 s
+  repeat 3: 0.009388 s
+  repeat 4: 0.011076 s
+  repeat 5: 0.008197 s
+  repeat 6: 0.007458 s
+  repeat 7: 0.009847 s
+
+[report1-2d-runtime-noio] method=muscl backend=serial n=50
+  warmup 1: 0.031452 s
+  warmup 2: 0.034484 s
+  repeat 1: 0.026895 s
+  repeat 2: 0.026475 s
+  repeat 3: 0.026573 s
+  repeat 4: 0.033538 s
+  repeat 5: 0.026289 s
+  repeat 6: 0.032293 s
+  repeat 7: 0.027317 s
+
+[report1-2d-runtime-noio] method=muscl backend=serial n=100
+  warmup 1: 0.193945 s
+  warmup 2: 0.199443 s
+  repeat 1: 0.192912 s
+  repeat 2: 0.199511 s
+  repeat 3: 0.190089 s
+  repeat 4: 0.191073 s
+  repeat 5: 0.193866 s
+  repeat 6: 0.198372 s
+  repeat 7: 0.194967 s
+
+[report1-2d-runtime-noio] method=muscl backend=serial n=200
+  warmup 1: 1.507702 s
+  warmup 2: 1.473038 s
+  repeat 1: 1.500598 s
+  repeat 2: 1.500249 s
+  repeat 3: 1.491776 s
+  repeat 4: 1.511310 s
+  repeat 5: 1.496884 s
+  repeat 6: 1.494594 s
+  repeat 7: 1.492688 s
+
+[report1-2d-runtime-noio] method=muscl backend=serial n=600
+  warmup 1: 43.428423 s
+  warmup 2: 43.770574 s
+  repeat 1: 43.922691 s
+  repeat 2: 43.566309 s
+  repeat 3: 43.929063 s
+  repeat 4: 43.616382 s
+  repeat 5: 44.060393 s
+  repeat 6: 43.680078 s
+  repeat 7: 43.706088 s
+
+[report1-2d-runtime-noio] method=muscl backend=openmp n=25
+  warmup 1: 0.009718 s
+  warmup 2: 0.008063 s
+  repeat 1: 0.006816 s
+  repeat 2: 0.006960 s
+  repeat 3: 0.007671 s
+  repeat 4: 0.007617 s
+  repeat 5: 0.008526 s
+  repeat 6: 0.008107 s
+  repeat 7: 0.009255 s
+
+[report1-2d-runtime-noio] method=muscl backend=openmp n=50
+  warmup 1: 0.019895 s
+  warmup 2: 0.017184 s
+  repeat 1: 0.014243 s
+  repeat 2: 0.015563 s
+  repeat 3: 0.013458 s
+  repeat 4: 0.015089 s
+  repeat 5: 0.013412 s
+  repeat 6: 0.015216 s
+  repeat 7: 0.013835 s
+
+[report1-2d-runtime-noio] method=muscl backend=openmp n=100
+  warmup 1: 0.067357 s
+  warmup 2: 0.071302 s
+  repeat 1: 0.070036 s
+  repeat 2: 0.067831 s
+  repeat 3: 0.068255 s
+  repeat 4: 0.065471 s
+  repeat 5: 0.068177 s
+  repeat 6: 0.070678 s
+  repeat 7: 0.070150 s
+
+[report1-2d-runtime-noio] method=muscl backend=openmp n=200
+  warmup 1: 0.461762 s
+  warmup 2: 0.466113 s
+  repeat 1: 0.464285 s
+  repeat 2: 0.466375 s
+  repeat 3: 0.458121 s
+  repeat 4: 0.466895 s
+  repeat 5: 0.461869 s
+  repeat 6: 0.473711 s
+  repeat 7: 0.459499 s
+
+[report1-2d-runtime-noio] method=muscl backend=openmp n=600
+  warmup 1: 12.699596 s
+  warmup 2: 12.590808 s
+  repeat 1: 13.357122 s
+  repeat 2: 12.742084 s
+  repeat 3: 13.026262 s
+  repeat 4: 12.904774 s
+  repeat 5: 12.896443 s
+  repeat 6: 12.813602 s
+  repeat 7: 13.247293 s
+
+[report1-2d-runtime-noio] method=muscl backend=cuda n=25
+  warmup 1: 0.380128 s
+  warmup 2: 0.376674 s
+  repeat 1: 0.360501 s
+  repeat 2: 0.363239 s
+  repeat 3: 0.365904 s
+  repeat 4: 0.361937 s
+  repeat 5: 0.359694 s
+  repeat 6: 0.362786 s
+  repeat 7: 0.353704 s
+
+[report1-2d-runtime-noio] method=muscl backend=cuda n=50
+  warmup 1: 0.352713 s
+  warmup 2: 0.353700 s
+  repeat 1: 0.356483 s
+  repeat 2: 0.354286 s
+  repeat 3: 0.357433 s
+  repeat 4: 0.366259 s
+  repeat 5: 0.358126 s
+  repeat 6: 0.355470 s
+  repeat 7: 0.354502 s
+
+[report1-2d-runtime-noio] method=muscl backend=cuda n=100
+  warmup 1: 0.361889 s
+  warmup 2: 0.364054 s
+  repeat 1: 0.366472 s
+  repeat 2: 0.364832 s
+  repeat 3: 0.366500 s
+  repeat 4: 0.384797 s
+  repeat 5: 0.371076 s
+  repeat 6: 0.377976 s
+  repeat 7: 0.370912 s
+
+[report1-2d-runtime-noio] method=muscl backend=cuda n=200
+  warmup 1: 0.444939 s
+  warmup 2: 0.456249 s
+  repeat 1: 0.440547 s
+  repeat 2: 0.448931 s
+  repeat 3: 0.448100 s
+  repeat 4: 0.446555 s
+  repeat 5: 0.442668 s
+  repeat 6: 0.444058 s
+  repeat 7: 0.453315 s
+
+[report1-2d-runtime-noio] method=muscl backend=cuda n=600
+  warmup 1: 2.254881 s
+  warmup 2: 2.247466 s
+  repeat 1: 2.249627 s
+  repeat 2: 2.252200 s
+  repeat 3: 2.236582 s
+  repeat 4: 2.256449 s
+  repeat 5: 2.267606 s
+  repeat 6: 2.258708 s
+  repeat 7: 2.245874 s
+
+[report1-2d-runtime-noio] method=weno2 backend=serial n=25
+  warmup 1: 0.011512 s
+  warmup 2: 0.012153 s
+  repeat 1: 0.014118 s
+  repeat 2: 0.014244 s
+  repeat 3: 0.011870 s
+  repeat 4: 0.011414 s
+  repeat 5: 0.010265 s
+  repeat 6: 0.013080 s
+  repeat 7: 0.012153 s
+
+[report1-2d-runtime-noio] method=weno2 backend=serial n=50
+  warmup 1: 0.045854 s
+  warmup 2: 0.050107 s
+  repeat 1: 0.049930 s
+  repeat 2: 0.052882 s
+  repeat 3: 0.051281 s
+  repeat 4: 0.052751 s
+  repeat 5: 0.050963 s
+  repeat 6: 0.051222 s
+  repeat 7: 0.048663 s
+
+[report1-2d-runtime-noio] method=weno2 backend=serial n=100
+  warmup 1: 0.329396 s
+  warmup 2: 0.331541 s
+  repeat 1: 0.345591 s
+  repeat 2: 0.334464 s
+  repeat 3: 0.327830 s
+  repeat 4: 0.335362 s
+  repeat 5: 0.333029 s
+  repeat 6: 0.338829 s
+  repeat 7: 0.340294 s
+
+[report1-2d-runtime-noio] method=weno2 backend=serial n=200
+  warmup 1: 2.662167 s
+  warmup 2: 2.644886 s
+  repeat 1: 2.597743 s
+  repeat 2: 2.621778 s
+  repeat 3: 2.620169 s
+  repeat 4: 2.617149 s
+  repeat 5: 2.620725 s
+  repeat 6: 2.594913 s
+  repeat 7: 2.628302 s
+
+[report1-2d-runtime-noio] method=weno2 backend=serial n=600
+  warmup 1: 72.649146 s
+  warmup 2: 72.870593 s
+  repeat 1: 72.801559 s
+  repeat 2: 72.829242 s
+  repeat 3: 72.802225 s
+  repeat 4: 73.245068 s
+  repeat 5: 73.289094 s
+  repeat 6: 73.366779 s
+  repeat 7: 73.335699 s
+
+[report1-2d-runtime-noio] method=weno2 backend=openmp n=25
+  warmup 1: 0.010703 s
+  warmup 2: 0.007824 s
+  repeat 1: 0.007002 s
+  repeat 2: 0.007183 s
+  repeat 3: 0.007916 s
+  repeat 4: 0.008563 s
+  repeat 5: 0.008722 s
+  repeat 6: 0.009666 s
+  repeat 7: 0.009784 s
+
+[report1-2d-runtime-noio] method=weno2 backend=openmp n=50
+  warmup 1: 0.020263 s
+  warmup 2: 0.012502 s
+  repeat 1: 0.019760 s
+  repeat 2: 0.012671 s
+  repeat 3: 0.015826 s
+  repeat 4: 0.013638 s
+  repeat 5: 0.014206 s
+  repeat 6: 0.017149 s
+  repeat 7: 0.013790 s
+
+[report1-2d-runtime-noio] method=weno2 backend=openmp n=100
+  warmup 1: 0.079732 s
+  warmup 2: 0.083747 s
+  repeat 1: 0.082200 s
+  repeat 2: 0.082082 s
+  repeat 3: 0.080686 s
+  repeat 4: 0.083138 s
+  repeat 5: 0.080698 s
+  repeat 6: 0.079417 s
+  repeat 7: 0.082777 s
+
+[report1-2d-runtime-noio] method=weno2 backend=openmp n=200
+  warmup 1: 0.558520 s
+  warmup 2: 0.571119 s
+  repeat 1: 0.556954 s
+  repeat 2: 0.565593 s
+  repeat 3: 0.559762 s
+  repeat 4: 0.558281 s
+  repeat 5: 0.555068 s
+  repeat 6: 0.566138 s
+  repeat 7: 0.558804 s
+
+[report1-2d-runtime-noio] method=weno2 backend=openmp n=600
+  warmup 1: 15.040387 s
+  warmup 2: 15.954406 s
+  repeat 1: 15.467463 s
+  repeat 2: 15.960992 s
+  repeat 3: 15.803485 s
+  repeat 4: 15.714864 s
+  repeat 5: 16.065192 s
+  repeat 6: 15.668654 s
+  repeat 7: 15.420528 s
+
+[report1-2d-runtime-noio] method=weno2 backend=cuda n=25
+  warmup 1: 0.363577 s
+  warmup 2: 0.360290 s
+  repeat 1: 0.364363 s
+  repeat 2: 0.364445 s
+  repeat 3: 0.357154 s
+  repeat 4: 0.364745 s
+  repeat 5: 0.361321 s
+  repeat 6: 0.364022 s
+  repeat 7: 0.366786 s
+
+[report1-2d-runtime-noio] method=weno2 backend=cuda n=50
+  warmup 1: 0.362932 s
+  warmup 2: 0.364768 s
+  repeat 1: 0.363291 s
+  repeat 2: 0.364045 s
+  repeat 3: 0.362322 s
+  repeat 4: 0.365359 s
+  repeat 5: 0.362941 s
+  repeat 6: 0.362980 s
+  repeat 7: 0.365195 s
+
+[report1-2d-runtime-noio] method=weno2 backend=cuda n=100
+  warmup 1: 0.374984 s
+  warmup 2: 0.380004 s
+  repeat 1: 0.378377 s
+  repeat 2: 0.386177 s
+  repeat 3: 0.381528 s
+  repeat 4: 0.380846 s
+  repeat 5: 0.375971 s
+  repeat 6: 0.378220 s
+  repeat 7: 0.376344 s
+
+[report1-2d-runtime-noio] method=weno2 backend=cuda n=200
+  warmup 1: 0.472724 s
+  warmup 2: 0.465542 s
+  repeat 1: 0.466551 s
+  repeat 2: 0.474006 s
+  repeat 3: 0.466768 s
+  repeat 4: 0.466715 s
+  repeat 5: 0.467450 s
+  repeat 6: 0.475033 s
+  repeat 7: 0.475812 s
+
+[report1-2d-runtime-noio] method=weno2 backend=cuda n=600
+  warmup 1: 2.842791 s
+  warmup 2: 2.839005 s
+  repeat 1: 2.822451 s
+  repeat 2: 2.819130 s
+  repeat 3: 2.833656 s
+  repeat 4: 2.840157 s
+  repeat 5: 2.824747 s
+  repeat 6: 2.837103 s
+  repeat 7: 2.831264 s
+
+saved Report 1 no-I/O runtime csv: /lsc/zeushome/lsc_user/report1_lovelace_runtime_package_2026-05-24_noio_alln/results/stageC/runtime_scaling_2d_report1_all_backends_lovelace_a30_noio.csv

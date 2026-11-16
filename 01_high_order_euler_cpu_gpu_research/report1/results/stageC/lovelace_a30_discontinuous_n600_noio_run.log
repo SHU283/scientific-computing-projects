@@ -1,0 +1,104 @@
+hostname: lovelace
+package: /lsc/zeushome/lsc_user/report1_lovelace_runtime_package_2026-05-24_noio_alln
+executable: /lsc/zeushome/lsc_user/report1_lovelace_runtime_package_2026-05-24_noio_alln/build-cuda/final_project
+N: 600 warmup: 1 repeats: 3
+OMP_NUM_THREADS: 16
+CUDA_VISIBLE_DEVICES: 0
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=godunov backend=serial n=600
+  warmup 1: 26.989091 s
+  repeat 1: 26.133395 s
+  repeat 2: 26.881213 s
+  repeat 3: 26.754123 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=godunov backend=openmp n=600
+  warmup 1: 8.727513 s
+  repeat 1: 7.695965 s
+  repeat 2: 8.522061 s
+  repeat 3: 8.205670 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=godunov backend=cuda n=600
+  warmup 1: 54.245770 s
+  repeat 1: 54.127817 s
+  repeat 2: 54.195745 s
+  repeat 3: 53.917018 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=muscl backend=serial n=600
+  warmup 1: 110.532270 s
+  repeat 1: 115.349767 s
+  repeat 2: 111.868109 s
+  repeat 3: 111.018318 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=muscl backend=openmp n=600
+  warmup 1: 38.450182 s
+  repeat 1: 39.352375 s
+  repeat 2: 37.659600 s
+  repeat 3: 38.625272 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=muscl backend=cuda n=600
+  warmup 1: 50.181854 s
+  repeat 1: 49.983508 s
+  repeat 2: 50.011117 s
+  repeat 3: 50.005137 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=weno2 backend=serial n=600
+  warmup 1: 222.870949 s
+  repeat 1: 276.947147 s
+  repeat 2: 282.018386 s
+  repeat 3: 269.038913 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=weno2 backend=openmp n=600
+  warmup 1: 54.181773 s
+  repeat 1: 55.687434 s
+  repeat 2: 52.769831 s
+  repeat 3: 53.003320 s
+\n[lovelace-discontinuous-noio] case=quadrant_riemann_2d method=weno2 backend=cuda n=600
+  warmup 1: 63.685805 s
+  repeat 1: 64.324609 s
+  repeat 2: 64.116475 s
+  repeat 3: 64.192401 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=godunov backend=serial n=600
+  warmup 1: 15.733842 s
+  repeat 1: 16.205827 s
+  repeat 2: 16.796382 s
+  repeat 3: 18.735490 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=godunov backend=openmp n=600
+  warmup 1: 5.762969 s
+  repeat 1: 5.964492 s
+  repeat 2: 5.824363 s
+  repeat 3: 5.974226 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=godunov backend=cuda n=600
+  warmup 1: 29.477557 s
+  repeat 1: 29.657719 s
+  repeat 2: 25.461030 s
+  repeat 3: 25.377629 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=muscl backend=serial n=600
+  warmup 1: 103.347617 s
+  repeat 1: 102.333404 s
+  repeat 2: 104.637331 s
+  repeat 3: 104.895572 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=muscl backend=openmp n=600
+  warmup 1: 23.994669 s
+  repeat 1: 23.839991 s
+  repeat 2: 23.974467 s
+  repeat 3: 23.919456 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=muscl backend=cuda n=600
+  warmup 1: 26.376898 s
+  repeat 1: 26.225470 s
+  repeat 2: 26.269229 s
+  repeat 3: 26.307017 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=weno2 backend=serial n=600
+  warmup 1: 132.122889 s
+  repeat 1: 151.602645 s
+  repeat 2: 109.541983 s
+  repeat 3: 77.844217 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=weno2 backend=openmp n=600
+  warmup 1: 18.107133 s
+  repeat 1: 17.966570 s
+  repeat 2: 17.621465 s
+  repeat 3: 17.867756 s
+\n[lovelace-discontinuous-noio] case=shock_bubble_2d method=weno2 backend=cuda n=600
+  warmup 1: 26.008514 s
+  repeat 1: 26.025016 s
+  repeat 2: 25.990466 s
+  repeat 3: 25.985048 s
+\nsaved: /lsc/zeushome/lsc_user/report1_lovelace_runtime_package_2026-05-24_noio_alln/results/stageC/runtime_discontinuous_2d_lovelace_a30_n600_noio.csv
+case,method,serial,openmp,cuda,openmp_speedup,cuda_speedup
+quadrant_riemann_2d,godunov,26.1334,7.69597,53.917,3.396,0.485
+quadrant_riemann_2d,muscl,111.018,37.6596,49.9835,2.948,2.221
+quadrant_riemann_2d,weno2,269.039,52.7698,64.1165,5.098,4.196
+shock_bubble_2d,godunov,16.2058,5.82436,25.3776,2.782,0.639
+shock_bubble_2d,muscl,102.333,23.84,26.2255,4.293,3.902
+shock_bubble_2d,weno2,77.8442,17.6215,25.985,4.418,2.996
