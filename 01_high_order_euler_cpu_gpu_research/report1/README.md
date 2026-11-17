@@ -1,8 +1,7 @@
 # Report 1 Code Package
 
 This is a curated code package for the Project Report 1 submission.  It contains
-the finite-volume solver, experiment scripts, selected outputs, and report source
-needed to support the results presented in the written report.
+the finite-volume solver, experiment scripts, and selected outputs used in the written report.
 
 Main implementation focus:
 
@@ -19,12 +18,11 @@ Main implementation focus:
 - `src/problems`: test problems
 - `src/backends`: serial, OpenMP, and CUDA backend code
 - `results`: selected Stage A--D outputs and figures
-- `report_tex`: LaTeX source for the submitted Report 1 text
 
 ## Build In WSL
 
 ```bash
-cd /mnt/d/code/Final_projects/report1_code_submission_2026-05-22
+cd report1
 cmake -S . -B build
 cmake --build build -j
 ./build/final_project
@@ -143,4 +141,3 @@ cmake --build build-cuda -j
 - `smooth_advection`, `gaussian_advection`, and `gaussian_advection_2d` use periodic boundaries and print density error norms when an exact reference is available.
 - `study=convergence` automatically writes a summary CSV when it finishes
 - 2D CSV outputs can be plotted directly with `scripts/plot_field_2d.py`.
-

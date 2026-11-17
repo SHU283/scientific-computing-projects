@@ -17,5 +17,3 @@ This folder includes representative outputs from the CUDA/CPU shock-bubble solve
 - `project_figs/rho_max_abs_error_vs_step_cpu1_gpu1.png`
 - `project_figs/runtime_total_cpu_vs_gpu.png`
 - `project_figs/timing_breakdown.png`
-
-Only selected CSV snapshots are included to keep the repository reviewable while still preserving raw data examples.

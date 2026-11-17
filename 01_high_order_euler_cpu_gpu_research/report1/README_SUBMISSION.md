@@ -39,11 +39,7 @@ cmake --build build-cuda -j
 
 The Python scripts in `scripts/` provide the report-specific batch runs and plotting commands.
 
-## Curation Notes
+## Methods
 
-This package intentionally excludes generated build directories, object files, executables, Python bytecode caches, temporary folders, and historical duplicate result folders such as `legacy`, `new`, and backup directories.
-
-The selected result files are grouped using the same four-stage organization used in the report. All figures directly included in the submitted Report 1 LaTeX source are present in `results/stageA`--`results/stageD`, together with supporting CSV data where available.
-
-The main Report 1 results use Godunov, MUSCL-Hancock, and WENO-2. Preliminary WENO-3 and ADER-3 source files are retained because they form part of the continuing Report 2 development, but they are not required to reproduce the main Report 1 figures.
-
+The main Report 1 results use Godunov, MUSCL-Hancock, and WENO-2.
+Preliminary WENO-3 and ADER-3 implementations continue in Report 2.

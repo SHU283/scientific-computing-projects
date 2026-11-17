@@ -53,9 +53,3 @@ cd build
 cmake ..
 make -j
 ```
-
-## Notes for Review
-
-- Large CSV outputs and build artifacts are intentionally excluded.
-- The recommended review entry points are the solver routines in `src/` and the MPI decomposition / halo-exchange code.
-- The project emphasizes the transition from serial implementation to OpenMP and MPI versions, including runtime, speedup, and parallel-efficiency analysis.

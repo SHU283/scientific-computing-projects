@@ -1,8 +1,7 @@
 # ADER-3 CFL-selection evidence
 
-This directory preserves the selected probe data used to justify the final
-ADER-3 discontinuous CFL value reported in the dissertation. It is supporting
-experimental history, not a second canonical result route.
+This directory contains the probe data used to select the ADER-3
+discontinuous CFL value.
 
 ## Final policy
 
@@ -19,8 +18,6 @@ experimental history, not a second canonical result route.
   summaries, including the CFL 0.13 and 0.14 comparison.
 - `ader3_quadrant_cfl_probe/`: broader quadrant-Riemann probe fields and logs.
 
-The files include summary CSVs, console logs, and exported fields where they
-are needed to inspect backend differences and admissibility. They document why
-the practical compromise CFL 0.14 was selected. They must not be mixed into
-the final performance or backend-consistency tables, whose canonical files are
-under `results/hllc/`.
+The summary CSVs, logs, and exported fields show backend differences and
+admissibility at each tested CFL. The main performance and backend-consistency
+experiments use the selected CFL and are stored under `results/hllc/`.

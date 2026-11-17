@@ -52,9 +52,3 @@ make -j
 ```
 
 Generated fields are written to a local `data/` directory when the solver is run.
-
-## Notes for Review
-
-- Large CSV outputs and build artifacts are intentionally excluded.
-- The recommended review entry points are `src/main/main.cpp`, `src/gpu/gpu_main.cu`, and the plotting scripts in `tools/`.
-- The project focuses on finite-volume implementation, CPU/GPU comparison, and basic performance analysis rather than production CFD software packaging.

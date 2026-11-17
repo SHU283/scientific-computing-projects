@@ -1,9 +1,7 @@
 # Report 2 HLLC Route
 
-This working tree is the official HLLC route for Report 2. New Report 2
-implementation work, validation outputs, timing data, plots, and report
-materials should be produced from this directory rather than from older HLL or
-Rusanov branches.
+The Report 2 solver in `code/hllc_solver/` uses HLLC interface fluxes with
+WENO-2, WENO-3, and ADER-3. This note describes the flux and CFL selection.
 
 ## Active Methods
 
@@ -91,27 +89,6 @@ The current diagnostic record is:
   quadrant Riemann at roundoff level and reduced the shock-bubble difference to
   about `2.02e-7`, with matching step/retry/fallback counts. The value `0.14`
   is therefore the official ADER-3 discontinuous CFL for Report 2.
-
-## Checks Completed
-
-Confirmed locally:
-
-- the HLLC branch builds in WSL;
-- compact local smoke tests pass;
-- exported smoke fields remain finite and positive.
-
-Confirmed from existing Lovelace data:
-
-- HLLC 2D smooth convergence through `400 x 400` is available;
-- ADER-3 discontinuous `CFL=0.14` is the selected official value after the
-  two-case CFL follow-up.
-
-Subsequently completed:
-
-- final HLLC backend-consistency and discontinuous performance matrices using
-  ADER-3 discontinuous `CFL=0.14`;
-- high-resolution discontinuous fields with the same official policy;
-- consolidated CFL-aligned validation and provenance audit.
 
 ## Lovelace Entry Points
 

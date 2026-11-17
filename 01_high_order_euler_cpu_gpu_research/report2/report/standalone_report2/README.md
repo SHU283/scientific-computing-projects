@@ -28,19 +28,11 @@ artificial `Part I` or `Part II` headings in the report itself:
 - `sections/`: editable report chapters.
 - `figures/`: only the confirmed figures used by the report.
 
-## Data provenance
+## Results
 
-The numerical values and figures in this report come from the canonical HLLC
-results stored in this package under `../../results/hllc/`.
+Numerical values and figures use the HLLC experiments in
+`../../results/hllc/`. The accuracy-performance chapter includes the
+matched HLL/Rusanov comparison from `../../analysis/hll_vs_hllc/`.
 
-No HLL/Rusanov performance data are used in the validation or backend-consistency
-chapters. HLL appears only as a strictly matched comparator in the accuracy--performance
-chapter; HLLC remains authoritative.
-
-The full formal-report audit dated 20 July 2026 is recorded in
-`../../docs/FORMAL_REPORT_HLLC_AUDIT_2026-07-20.md`; the earlier data-version
-audit is retained in `../../docs/DATA_VERSION_AUDIT_2026-07-19.md`. The July
-WENO-2 OpenMP correction changes performance measurements, not the numerical
-fields: a fresh local serial/OpenMP replay of all three Stage B WENO-2 cases
-produced byte-identical CSV files. Stage C performance values are taken from
-the post-refresh canonical tables included in this package.
+The [results summary](../../docs/results.md) describes the experiments and
+the WENO-2 OpenMP correction used in the performance tables.

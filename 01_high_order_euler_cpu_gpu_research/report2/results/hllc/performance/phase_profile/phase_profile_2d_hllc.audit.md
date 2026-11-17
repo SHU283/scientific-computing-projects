@@ -1,8 +1,4 @@
-# HLLC phase-profile audit
-
-- Raw rows: 36
-- Expected rows: 36
-- Audit findings: 0
+# HLLC phase-profile timing statistics
 
 | n | method | backend | repeats | median total (s) | range / median | accounted | process overhead (s) |
 |---:|:---|:---|---:|---:|---:|---:|---:|
@@ -24,7 +20,3 @@
 | 600 | ADER3 | serial | 1 | 10171.6 | 0.00% | 100.00% | 0.2982 |
 | 600 | ADER3 | openmp | 1 | 907.777 | 0.00% | 100.00% | 0.314 |
 | 600 | ADER3 | cuda | 1 | 10.0399 | 0.00% | 99.93% | 0.7281 |
-
-## Findings
-
-- No completeness or timing-consistency problems detected.

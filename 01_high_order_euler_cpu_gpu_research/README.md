@@ -40,33 +40,18 @@ CUDA builds require a compatible CUDA toolkit and GPU; configure with
 `-DFP_ENABLE_CUDA=ON`. Plotting dependencies are listed in
 [`report2/requirements.txt`](report2/requirements.txt).
 
-## Snapshot integrity and scope
+## Reports and remote experiments
 
-The 450 files under `report1/` and 673 files under `report2/` preserve the
-submission package contents byte for byte. They were checked against the
-original Report 1 `.tar.gz` and Report 2 `.zip` archives before import.
-[`SUBMISSION_MANIFEST.csv`](SUBMISSION_MANIFEST.csv) records each packaged
-file's size and SHA-256 checksum. Git line-ending conversion is disabled to
-preserve these archived bytes across platforms.
+Use [Report 1's build and experiment guide](report1/README_SUBMISSION.md) to
+run its solver. The standalone Report 2 LaTeX source is under
+`report2/report/standalone_report2/`.
 
-The original package documentation is retained. In particular, the historical
-Report 1 `README.md` mentions `report_tex/` and an old absolute checkout path;
-the submitted archive does not contain `report_tex/`. Use the build commands
-above and `report1/README_SUBMISSION.md` for this repository. The standalone
-Report 2 LaTeX source is available under `report2/report/standalone_report2/`.
-
-The Report 2 remote workflow scripts retain their original local and Lovelace
-paths as provenance. Adjust those paths for another machine or account before
-rerunning remote campaigns. The package-local analysis remains self-contained.
-
-The original compressed archives, separate signed declarations, presentation
-materials, and wider development workspace are outside this repository's
-submission-package scope. Existing technical validation is documented in
-[`report2/docs/SUBMISSION_EVIDENCE_AUDIT_2026-08-04.md`](report2/docs/SUBMISSION_EVIDENCE_AUDIT_2026-08-04.md).
+The Report 2 remote workflow scripts use Lovelace-specific workspace and
+account paths. Set those paths for your own machine before running a remote
+campaign. The analysis and plotting scripts run against the packaged data.
 
 ## 中文说明
 
-本仓库分别保存 Report 1 和 Report 2 已整理好的提交包。代码、数据、图表和
-包内文档保持原始内容，并附文件校验清单。Report 1 从
-`report1/README_SUBMISSION.md` 开始阅读；Report 2 从 `report2/README.md`
-开始阅读。Report 2 的 HLLC 路线是正式实现，HLL/Rusanov 仅作为对照。
+项目包含 Report 1 和 Report 2 的数值方法实现、并行计算代码、实验数据和图表。
+Report 1 从 `report1/README_SUBMISSION.md` 开始阅读；Report 2 从
+`report2/README.md` 开始阅读。Report 2 采用 HLLC 通量，HLL/Rusanov 用于对照实验。

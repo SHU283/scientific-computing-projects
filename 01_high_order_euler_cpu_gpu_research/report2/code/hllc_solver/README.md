@@ -18,7 +18,4 @@ Enable CUDA with `-DFP_ENABLE_CUDA=ON` on a machine with a compatible CUDA
 toolkit. `scripts/run_report2_local_smoke.py` provides a compact regression
 suite after building.
 
-Generated build directories and result files are intentionally absent from
-this source directory. Canonical outputs are stored at
-`../../results/hllc/` in the submission package.
-
+Experiment outputs are stored at `../../results/hllc/`.
